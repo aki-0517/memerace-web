@@ -203,34 +203,7 @@ export default function SubmitEntryPage() {
         <div>
           <Card className="pixel-card">
             <CardContent className="p-6">
-              <div className="mb-6 space-y-4">
-                <h3 className="text-lg font-semibold">Get updates on contests</h3>
-                <Tabs defaultValue="email">
-                  <TabsList className="grid w-full grid-cols-2 border-2 border-solana-purple">
-                    <TabsTrigger value="email">Email</TabsTrigger>
-                    <TabsTrigger value="telegram">Telegram</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-                <Input placeholder="Enter your email" />
-                <Button className="w-full">Subscribe</Button>
-              </div>
-
-              <Separator className="my-6" />
-
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">my wallet | add funds</h3>
-                  <Button variant="outline" size="sm" className="border-2 border-solana-purple">
-                    Add
-                  </Button>
-                </div>
-
-                <div className="rounded-lg border-2 border-solana-purple bg-card p-4">
-                  <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-solana-purple to-solana-green">
-                    12.131 POL
-                  </p>
-                </div>
-
                 <div className="rounded-lg border-2 border-black bg-card p-4">
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">entry charge</p>
