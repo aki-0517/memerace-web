@@ -29,7 +29,7 @@ export default function Home() {
           </div>
           <div className="relative mt-8 w-full max-w-5xl overflow-hidden rounded-lg border-4 border-black pixel-borders">
             <img
-              src="/placeholder.svg?height=600&width=1200"
+              src="https://miro.medium.com/v2/resize:fit:1400/1*9qG8H2FF9vNiGMWljgX4SA.png"
               alt="Memerace platform preview"
               className="w-full object-cover"
             />

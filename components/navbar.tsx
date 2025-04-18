@@ -5,14 +5,15 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-import { useWallet } from "@/components/wallet-provider"
 import { Menu, X } from "lucide-react"
 import NetworkSelection from "@/components/network-selection"
 import PixelArtLogo from "@/components/pixel-art-logo"
+import { WalletConnectButton } from "@/components/wallet-connect-button"
+import { useWallet } from '@solana/wallet-adapter-react'
 
 export default function Navbar() {
   const pathname = usePathname()
-  const { isConnected, connect, disconnect, address } = useWallet()
+  const { connected, publicKey } = useWallet()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -72,22 +73,9 @@ export default function Navbar() {
 
           <ModeToggle />
 
-          {isConnected ? (
-            <Button
-              variant="outline"
-              onClick={disconnect}
-              className="hidden md:inline-flex border-2 border-solana-purple"
-            >
-              {formatAddress(address || "")}
-            </Button>
-          ) : (
-            <Button
-              onClick={connect}
-              className="hidden md:inline-flex pixel-button bg-solana-purple hover:bg-solana-purple/90"
-            >
-              Connect Wallet
-            </Button>
-          )}
+          <div className="hidden md:block">
+            <WalletConnectButton />
+          </div>
 
           <button
             className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground md:hidden"
@@ -125,15 +113,7 @@ export default function Navbar() {
               <NetworkSelection />
             </div>
             <div className="mt-4 px-3">
-              {isConnected ? (
-                <Button variant="outline" onClick={disconnect} className="w-full">
-                  {formatAddress(address || "")}
-                </Button>
-              ) : (
-                <Button onClick={connect} className="w-full">
-                  Connect Wallet
-                </Button>
-              )}
+              <WalletConnectButton className="w-full" />
             </div>
           </div>
         </div>

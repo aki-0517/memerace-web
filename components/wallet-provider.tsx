@@ -1,6 +1,50 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { FC, ReactNode, useMemo } from 'react'
+import { ConnectionProvider, WalletProvider as SolanaWalletProvider } from '@solana/wallet-adapter-react'
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
+import { PhantomWalletAdapter, SolflareWalletAdapter, TorusWalletAdapter } from '@solana/wallet-adapter-wallets'
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
+import { clusterApiUrl } from '@solana/web3.js'
+
+// デフォルトスタイル（必要に応じてオーバーライド可能）
+import '@solana/wallet-adapter-react-ui/styles.css'
+
+interface Props {
+  children: ReactNode
+}
+
+export const WalletProvider: FC<Props> = ({ children }) => {
+  // ネットワークを'devnet'、'testnet'、または'mainnet-beta'に設定できます
+  const network = WalletAdapterNetwork.Devnet
+
+  // カスタムRPCエンドポイントも提供できます
+  const endpoint = useMemo(() => clusterApiUrl(network), [network])
+
+  // サポートするウォレットのリスト
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new TorusWalletAdapter(),
+    ],
+    [network]
+  )
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <SolanaWalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          {children}
+        </WalletModalProvider>
+      </SolanaWalletProvider>
+    </ConnectionProvider>
+  )
+}
+
+// 元のコンテキストとフックを保持（互換性のため）
+import { createContext, useContext, useState, useEffect } from "react"
+import { useWallet as useSolanaWallet } from '@solana/wallet-adapter-react'
 
 interface WalletContextType {
   isConnected: boolean
@@ -18,51 +62,15 @@ const WalletContext = createContext<WalletContextType>({
   disconnect: () => {},
 })
 
-export const useWallet = () => useContext(WalletContext)
-
-export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [isConnected, setIsConnected] = useState(false)
-  const [address, setAddress] = useState<string | null>(null)
-  const [balance, setBalance] = useState(0)
-
-  // Mock wallet connection
-  const connect = () => {
-    // Generate a random Solana-like address
-    const mockAddress = "So1ana" + Math.random().toString(36).substring(2, 10)
-    setAddress(mockAddress)
-    setBalance(Math.floor(Math.random() * 100))
-    setIsConnected(true)
-
-    // Store in localStorage for persistence
-    localStorage.setItem("walletConnected", "true")
-    localStorage.setItem("walletAddress", mockAddress)
+export const useWallet = () => {
+  const context = useContext(WalletContext)
+  const solanaWallet = useSolanaWallet()
+  
+  return {
+    ...context,
+    isConnected: solanaWallet.connected,
+    address: solanaWallet.publicKey?.toString() || null,
+    connect: solanaWallet.connect,
+    disconnect: solanaWallet.disconnect,
   }
-
-  const disconnect = () => {
-    setIsConnected(false)
-    setAddress(null)
-    setBalance(0)
-
-    // Clear localStorage
-    localStorage.removeItem("walletConnected")
-    localStorage.removeItem("walletAddress")
-  }
-
-  // Check if wallet was previously connected
-  useEffect(() => {
-    const wasConnected = localStorage.getItem("walletConnected") === "true"
-    const savedAddress = localStorage.getItem("walletAddress")
-
-    if (wasConnected && savedAddress) {
-      setIsConnected(true)
-      setAddress(savedAddress)
-      setBalance(Math.floor(Math.random() * 100))
-    }
-  }, [])
-
-  return (
-    <WalletContext.Provider value={{ isConnected, address, balance, connect, disconnect }}>
-      {children}
-    </WalletContext.Provider>
-  )
 }

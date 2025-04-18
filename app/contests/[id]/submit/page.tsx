@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator"
 import { Bold, Italic, LinkIcon, List, ListOrdered, Quote, ImageIcon } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { WalletConnectButton } from "@/components/wallet-connect-button"
 
 export default function SubmitEntryPage() {
   const { id } = useParams()
@@ -71,15 +72,9 @@ export default function SubmitEntryPage() {
       <div className="container flex flex-col items-center justify-center py-16">
         <Card className="mx-auto w-full max-w-md pixel-card">
           <CardContent className="p-6 text-center">
-            <h1 className="mb-4 text-2xl font-bold">Connect Your Wallet</h1>
-            <p className="mb-6 text-muted-foreground">You need to connect your wallet to submit an entry.</p>
-            <Button
-              onClick={connect}
-              size="lg"
-              className="w-full pixel-button bg-solana-purple hover:bg-solana-purple/90"
-            >
-              Connect Wallet
-            </Button>
+            <h1 className="mb-4 text-2xl font-bold">Connect Wallet</h1>
+            <p className="mb-6 text-muted-foreground">You need to connect your wallet to create a contest.</p>
+            <WalletConnectButton className="w-full" />
           </CardContent>
         </Card>
       </div>

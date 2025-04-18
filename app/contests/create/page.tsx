@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useWallet } from "@/components/wallet-provider"
+import { WalletConnectButton } from "@/components/wallet-connect-button"
 import ThemeSelectionStep from "@/components/create-contest/theme-selection-step"
 import ContestTypeStep from "@/components/create-contest/contest-type-step"
 import RewardsStep from "@/components/create-contest/rewards-step"
@@ -62,9 +63,7 @@ export default function CreateContestPage() {
           <CardContent className="p-6 text-center">
             <h1 className="mb-4 text-2xl font-bold">Connect Your Wallet</h1>
             <p className="mb-6 text-muted-foreground">You need to connect your wallet to create a contest.</p>
-            <Button onClick={connect} size="lg" className="w-full">
-              Connect Wallet
-            </Button>
+            <WalletConnectButton className="w-full" />
           </CardContent>
         </Card>
       </div>
