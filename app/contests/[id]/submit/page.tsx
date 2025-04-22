@@ -202,7 +202,7 @@ export default function SubmitEntryPage() {
                 <div className="rounded-lg border-2 border-black bg-card p-4">
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">entry charge</p>
-                    <p className="font-medium">0.5 POL</p>
+                    <p className="font-medium">0.5 BONK</p>
                   </div>
                 </div>
 
